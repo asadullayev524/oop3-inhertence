@@ -1,4 +1,5 @@
 <?php
+
 $params = array_merge(
     require __DIR__ . '/../../common/config/params.php',
     require __DIR__ . '/../../common/config/params-local.php',
@@ -11,40 +12,54 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+
+    // Default route (login emas, API)
+    'defaultRoute' => 'oop3-inheritance/add-example',
+
     'components' => [
+
+        // Request component
         'request' => [
             'csrfParam' => '_csrf-backend',
         ],
+
+        // USER component — DBsiz, loginsiz
         'user' => [
-            'identityClass' => 'common\models\User',
-            'enableAutoLogin' => true,
-            'identityCookie' => ['name' => '_identity-backend', 'httpOnly' => true],
+            'identityClass' => null,
+            'enableAutoLogin' => false,
+            'enableSession' => false,
         ],
+
+        // Session (kerak, lekin login yo‘q)
         'session' => [
-            // this is the name of the session cookie used for login on the backend
             'name' => 'advanced-backend',
         ],
+
+        // Error handler
+        'errorHandler' => [
+            'errorAction' => 'site/error',
+        ],
+
+        // Log
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
             'targets' => [
                 [
-                    'class' => \yii\log\FileTarget::class,
+                    'class' => yii\log\FileTarget::class,
                     'levels' => ['error', 'warning'],
                 ],
             ],
         ],
-        'errorHandler' => [
-            'errorAction' => 'site/error',
-        ],
+
         /*
+        // Agar keyin kerak bo‘lsa
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
-            'rules' => [
-            ],
+            'rules' => [],
         ],
         */
     ],
+
     'params' => $params,
 ];
